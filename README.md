@@ -1,20 +1,95 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# SkyShield 航盾 UAV V4.1 🛰️
 
-# Run and deploy your AI Studio app
+> **双用途无人机固/硬件协同监管缺陷预警平台 · 全国大学生创新创业大赛答辩子系统**
 
-This contains everything you need to run your app locally.
+SkyShield（航盾）是一个自主研发的、用于无人机（UAV）软硬件协同安全检测与缺陷预警的高端监控展示平台。本平台专门针对双用途无人机固件、传感器底层物理控制代码和复杂环境下的传感器滤波冲突提供一站式安全检测。为了让评委在答辩中轻松、直观地读懂底层深奥的卡尔曼滤波、贝叶斯控制反馈与物理断言逻辑，本平台特别将复杂的学术模型翻译成了**一键式物理起飞/坠落断言指示系统**。
 
-View your app in AI Studio: https://ai.studio/apps/7af84e5c-145c-40e0-b1e8-ecc0fca91eba
+---
 
-## Run Locally
+## 🌟 核心设计理念
 
-**Prerequisites:**  Node.js
+1. **直观断言，极易上手**：
+   抛弃传统晦涩的遥测日志，将控制边界、Dibs 贝叶斯因果图和物理驱动冲突通过可视化曲线、虚拟飞行飞行轨迹检测、动态罗盘偏差度一键呈现。
+2. **极简居中导航，无过度拟合**：
+   响应最新优化要求，取消冗长冗余的引导文字与“步骤”暗示。界面导航完全**精简居中**，布局对称且呼吸感强。
+3. **冷暖双模，无缝切换**：
+   支持**深色（Dark Mode）**宇宙深蓝探针主题与**浅色（Light Mode）**明亮极简办公主题，满足不同答辩场地和光线环境的演示需求。
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🛠️ 核心功能模块
+
+### 🧭 1. 起飞罗盘与虚拟飞行 (Flight Compass & Virtual Flight Tester)
+* **动态控制罗盘**：实时可视化无人机陀螺仪和气压计偏差等级。
+* **物理飞行测试机（仿真空中航迹）**：模拟真实的航向注入、断言判断。直观显示在存在传感器漂移和卡尔曼滤波滞后条件下的真实物理起飞/偏航断言。
+* **多版本迭代比对**：支持多代执飞固件的指标数据横向交叉验证，快速回溯历史演进中的缺陷抖动。
+
+### 🛡️ 2. 软硬交互热点扫描 (Hardware/Software Interaction Hotspot Scanner)
+* **软硬物理交界热点**：快速静态扫描固件中包含物理寄存器读写（如 I2C/SPI）、中断延迟或缓冲区死锁可能出现的交互热点。
+* **Pareto 累计贡献率分析**：通过交互帕累托法则，提取出造成无人机 80% 硬件延迟的 20% 核心控制堆栈。
+* **自对齐代码审查**：零温安全约束集的逐行分析，包含代码定位、危险级别和修复建议。
+
+### 🧠 3. 底层函数语义分类 (Low-level Function Semantic Classifier)
+* **大模型驱动的高精度分析**：利用 AI 强大的语义分类能力，对固件底层 C/C++ 硬件交互函数开展高精度安全级别分类。
+* **三维缺陷热力视图**：对输入函数实现对齐清洗，秒级输出包含安全（Safe）、物理冲突可疑（Suspicious）和高危硬穿透（Vulnerable）类型的安全标签分类报告。
+
+---
+
+## 🎨 界面视觉亮点
+
+* **配色与阴影**：通过柔和的明暗度过渡设计，杜绝大片扎眼的紫色渐变。使用沉稳的科技蓝与琥珀色微调，保证了学术汇报的规范性。
+* **双模主题引擎**：原生搭载自定义的主题机制（全局轻量浅色类 + 高阶探针深色类），完美兼容渐变页眉与 SVG 图表的自适应变色渲染。
+* **极致排版**：全面选用 `Inter` 功能无衬线体作为主体框架搭配 `JetBrains Mono` 作为代码及数据流专属字体，彰显专业度。
+
+---
+
+## 📁 目录结构
+
+```bash
+├── src/
+│   ├── components/
+│   │   ├── CompassModule.tsx      # 模块一：起飞罗盘偏差度配置
+│   │   ├── FlightTester.tsx       # 模块一：虚拟轨迹与起飞断言核心检测板
+│   │   ├── ScannerModule.tsx      # 模块二：交互帕累托与代码漏洞热点一键静态扫描
+│   │   └── ClassifierModule.tsx   # 模块三：云端语义智能高精度分类器
+│   ├── App.tsx                    # 主视图入口 (包含精简版居中导航与双模切换)
+│   ├── index.css                  # 全局 Tailwind & 双模 (light-theme) 主题覆盖样式
+│   └── main.tsx                   # 页面渲染主节点
+├── index.html                     # HTML主体框架
+├── metadata.json                  # 应用元数据
+├── package.json                   # 项目依赖 & 启动配置
+└── README.md                      # 项目说明文档（本文件）
+```
+
+---
+
+## 🚀 如何运行本项目
+
+### 1. 基础环境
+请确保本地系统安装有 **Node.js (Recommended Node 16+)** 与稳定包管理器。
+
+### 2. 安装依赖
+在项目根目录下，执行以下命令安装前端构建依赖：
+```bash
+npm install
+```
+
+### 3. 本地启动开发服务器
+启动开发联调时，Vite 开发服务端将通过 3000 端口提供外部挂载和实时交互：
+```bash
+npm run dev
+```
+运行成功后，访问命令行提供的网络地址（默认通常为 `http://localhost:3000`）即可启动仿真调试。
+
+### 4. 单元与类型检查 (Linter)
+在进行代码重构、答辩更新或版本提交前，用于验证类型安全与编码规范的自动检查工具：
+```bash
+npm run lint
+```
+
+### 5. 编译与打包 (Build)
+生成适用于云端部署的高度混淆与压缩的静态体验代码包：
+```bash
+npm run build
+```
+编译生成的生产资源包将存放于 `dist/` 目录中。
