@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/* Main Theme System Overrides for SkyShield */
+
+/* Custom global rules */
+.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #e2e8f0;
+  --border-color-strong: #cbd5e1;
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+}
+
+/* Override standard utility backgrounds when in light mode */
+.light-theme .bg-\[\#070A13\] {
+  background-color: #f8fafc !important;
+}
+
+.light-theme .bg-\[\#111827\] {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light-theme .bg-\[\#0B0F19\] {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light-theme .bg-\[\#111827\]\/40 {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+.light-theme .bg-slate-950\/85 {
+  background-color: rgba(241, 245, 249, 0.9) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light-theme .bg-gray-950\/60 {
+  background-color: rgba(248, 250, 252, 0.8) !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.light-theme .bg-gray-950 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+.light-theme .bg-gray-900 {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+.light-theme .bg-slate-900\/60 {
+  background-color: rgba(241, 245, 249, 0.7) !important;
+  color: #334155 !important;
+}
+
+.light-theme .bg-slate-800\/90 {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+}
+
+.light-theme .bg-\[\#0F1D36\] {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light-theme .bg-\[\#0E1528\] {
+  background-color: #cbd5e1 !important;
+}
+
+/* Header gradient background styles */
+.light-theme header.bg-gradient-to-r {
+  background-image: linear-gradient(to right, #f1f5f9, #f8fafc) !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Border overrides */
+.light-theme .border-gray-800 {
+  border-color: #e2e8f0 !important;
+}
+.light-theme .border-gray-800\/80 {
+  border-color: rgba(226, 232, 240, 0.8) !important;
+}
+.light-theme .border-gray-800\/40 {
+  border-color: rgba(226, 232, 240, 0.5) !important;
+}
+.light-theme .border-gray-700 {
+  border-color: #cbd5e1 !important;
+}
+.light-theme .border-gray-900 {
+  border-color: #cbd5e1 !important;
+}
+.light-theme .border-slate-800 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Text overrides */
+.light-theme .text-gray-100 {
+  color: #0f172a !important;
+}
+.light-theme .text-gray-200 {
+  color: #1e293b !important;
+}
+.light-theme .text-gray-300 {
+  color: #334155 !important;
+}
+.light-theme .text-gray-400 {
+  color: #475569 !important;
+}
+.light-theme .text-gray-500 {
+  color: #64748b !important;
+}
+.light-theme .text-gray-600 {
+  color: #475569 !important;
+}
+
+/* Status indicator badge background fixes */
+.light-theme .bg-teal-950 {
+  background-color: #e6f4ea !important;
+  color: #137333 !important;
+}
+.light-theme .bg-sky-950 {
+  background-color: #e8f0fe !important;
+  color: #1a73e8 !important;
+}
+.light-theme .bg-amber-950 {
+  background-color: #fef7e0 !important;
+  color: #b06000 !important;
+}
+.light-theme .bg-purple-950 {
+  background-color: #f3e8fd !important;
+  color: #8c19d2 !important;
+}
+.light-theme .bg-red-950 {
+  background-color: #fce8e6 !important;
+  color: #c5221f !important;
+}
+
+/* Form items selection */
+.light-theme select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Pre, Code, Terminal areas */
+.light-theme pre,
+.light-theme code {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Chart/Gauge component segment tracks */
+.light-theme svg path[stroke="#1F2937"] {
+  stroke: #e2e8f0 !important;
+}
+.light-theme svg line[stroke="#1F2937"] {
+  stroke: #cbd5e1 !important;
+}
+.light-theme svg line[stroke="#374151"] {
+  stroke: #cbd5e1 !important;
+}
+
+/* Hover fixes */
+.light-theme .hover\:bg-slate-900\/60:hover {
+  background-color: rgba(226, 232, 240, 0.8) !important;
+}
+.light-theme .hover\:text-gray-200:hover {
+  color: #0f172a !important;
+}
+
+/* Special button styles for flight control status tabs */
+.light-theme .border-b-amber-500 {
+  border-bottom-color: #f59e0b !important;
+}
+.light-theme .border-b-sky-400 {
+  border-bottom-color: #0284c7 !important;
+}
+.light-theme .border-b-blue-400 {
+  border-bottom-color: #2563eb !important;
+}
+
+.light-theme .bg-slate-800\/90 {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}

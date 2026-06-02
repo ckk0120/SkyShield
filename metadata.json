@@ -1,0 +1,6 @@
+{
+  "name": "SkyShield 航盾",
+  "description": "双用途无人机固/硬件协同监管缺陷预警平台 - 国创赛高分展示系统",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
