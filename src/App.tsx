@@ -39,11 +39,11 @@ export default function App() {
             <div className="flex flex-col">
               <span className="font-sans font-extrabold text-gray-100 tracking-tight leading-tight flex items-center gap-1.5 md:text-lg">
                 SkyShield 航盾 
-                <span className="text-[10px] bg-sky-950 text-sky-400 px-2 py-0.5 rounded font-mono font-bold border border-sky-500/10">
+                <span className="text-[12px] bg-sky-950 text-sky-400 px-2 py-0.5 rounded font-mono font-bold border border-sky-500/10">
                   UAV V4.1
                 </span>
               </span>
-              <span className="text-[10.5px] text-gray-400 font-sans">
+              <span className="text-[13px] text-gray-400 font-sans">
                 双用途无人机固/硬件协同监管缺陷预警平台
               </span>
             </div>
@@ -52,7 +52,7 @@ export default function App() {
           {/* Right Header Navigation - Metadata & Theme Toggle */}
           <div className="flex items-center space-x-4">
             {/* Clock / System status metadata (Simplifies cockpit style with no telemetry-larp) */}
-            <div className="hidden md:flex items-center space-x-3 text-xs text-gray-400">
+            <div className="hidden md:flex items-center space-x-3 text-sm text-gray-400">
               <div className="flex items-center space-x-2 font-mono bg-gray-950/60 px-3 py-1.5 rounded border border-gray-800">
                 <Clock className="w-3.5 h-3.5 text-sky-400" />
                 <span>系统时间 (UTC): {sysTime.toISOString().replace("T", " ").slice(0, 19)}</span>
@@ -91,7 +91,7 @@ export default function App() {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] text-gray-500 font-sans block">平台防御级别</span>
+              <span className="text-[12px] text-gray-500 font-sans block">平台防御级别</span>
               <strong className="text-sm font-sans font-bold text-gray-200">A级 物理拒溢防死锁</strong>
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function App() {
               <Cpu className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] text-gray-500 font-sans block">LLM 零温约束集</span>
+              <span className="text-[12px] text-gray-500 font-sans block">LLM 零温约束集</span>
               <strong className="text-sm font-sans font-bold text-gray-200">100% 词法自对齐清洗</strong>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function App() {
               <Compass className="w-5 h-5 animate-spin" style={{ animationDuration: '8s' }} />
             </div>
             <div>
-              <span className="text-[10px] text-gray-500 font-sans block">因果分析引擎</span>
+              <span className="text-[12px] text-gray-500 font-sans block">因果分析引擎</span>
               <strong className="text-sm font-sans font-bold text-gray-200">DiBS 动态贝叶斯装载</strong>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function App() {
               <HardDrive className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] text-gray-500 font-sans block">起飞机动验证仪</span>
+              <span className="text-[12px] text-gray-500 font-sans block">起飞机动验证仪</span>
               <strong className="text-sm font-sans font-bold text-gray-200">仿真空中航迹闭环</strong>
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function App() {
             <button
               id="tab-compass"
               onClick={() => setActiveTab("compass")}
-              className={`px-5 py-2.5 rounded-lg font-sans text-xs font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+              className={`px-5 py-2.5 rounded-lg font-sans text-sm font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                 activeTab === "compass"
                   ? "bg-slate-800/90 text-[#FFF] shadow-md border-b border-amber-500/80"
                   : "text-gray-400 hover:text-gray-200 hover:bg-slate-900/60"
@@ -146,7 +146,7 @@ export default function App() {
             <button
               id="tab-scanner"
               onClick={() => setActiveTab("scanner")}
-              className={`px-5 py-2.5 rounded-lg font-sans text-xs font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+              className={`px-5 py-2.5 rounded-lg font-sans text-sm font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                 activeTab === "scanner"
                   ? "bg-slate-800/90 text-[#FFF] shadow-md border-b border-sky-400/80"
                   : "text-gray-400 hover:text-gray-200 hover:bg-slate-900/60"
@@ -159,7 +159,7 @@ export default function App() {
             <button
               id="tab-classifier"
               onClick={() => setActiveTab("classifier")}
-              className={`px-5 py-2.5 rounded-lg font-sans text-xs font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+              className={`px-5 py-2.5 rounded-lg font-sans text-sm font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                 activeTab === "classifier"
                   ? "bg-slate-800/90 text-[#FFF] shadow-md border-b border-blue-400/80"
                   : "text-gray-400 hover:text-gray-200 hover:bg-slate-900/60"
@@ -181,7 +181,7 @@ export default function App() {
       </main>
 
       {/* Elegant minimalist platform footer */}
-      <footer className="bg-gray-950/60 border-t border-gray-800 py-4 text-center text-xs text-gray-500 font-sans">
+      <footer className="bg-gray-950/60 border-t border-gray-800 py-4 text-center text-sm text-gray-500 font-sans">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2">
           <span>© 2026 SkyShield 航盾 · UAV Multi-Level Defense Center</span>
         </div>

@@ -255,14 +255,14 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
             <h3 className="font-sans font-medium text-gray-100 flex items-center gap-2">
               🛫 核心物理验证：SkyShield 虚拟真机起飞推断系统
             </h3>
-            <p className="text-xs text-gray-400">
+            <p className="text-sm text-gray-400">
               实时仿真飞行验证，将因果分析结果映射为直观的起降机动与传感器告警
             </p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-xs text-gray-400">当前被载固件:</span>
-          <span className="px-2 py-0.5 rounded bg-gray-800 text-xs font-mono text-teal-400 border border-teal-500/20">
+          <span className="text-sm text-gray-400">当前被载固件:</span>
+          <span className="px-2 py-0.5 rounded bg-gray-800 text-sm font-mono text-teal-400 border border-teal-500/20">
             {selectedVersion.tag.split(" ")[0]}
           </span>
         </div>
@@ -272,7 +272,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
         {/* Left Control Panel / Visual 3D Position */}
         <div className="lg:col-span-4 flex flex-col justify-between space-y-4">
           <div className="bg-gray-900/60 p-4 rounded-lg border border-gray-800/80 flex flex-col items-center">
-            <span className="text-xs text-gray-400 self-start mb-2 font-mono">✈️ 无人机姿态动态仿真仪</span>
+            <span className="text-sm text-gray-400 self-start mb-2 font-mono">✈️ 无人机姿态动态仿真仪</span>
             
             {/* Visual Artificial Horizon (Gyroscopic Pitch/Roll Indicator) */}
             <div className="relative w-44 h-44 rounded-full border-[3px] border-gray-600 bg-[#020617] overflow-hidden flex items-center justify-center" style={{boxShadow: 'inset 0 0 30px rgba(0,0,0,0.5), 0 0 0 2px #1e293b'}}>
@@ -307,10 +307,10 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               </div>
 
               {/* Angle ticks */}
-              <div className="absolute top-2 text-[10px] font-mono text-white/70 z-10 bg-slate-900/80 px-1.5 rounded">
+              <div className="absolute top-2 text-[12px] font-mono text-white/70 z-10 bg-slate-900/80 px-1.5 rounded">
                 R: {telemetry.roll}°
               </div>
-              <div className="absolute bottom-2 text-[10px] font-mono text-white/70 z-10 bg-slate-900/80 px-1.5 rounded">
+              <div className="absolute bottom-2 text-[12px] font-mono text-white/70 z-10 bg-slate-900/80 px-1.5 rounded">
                 P: {telemetry.pitch}°
               </div>
 
@@ -318,7 +318,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               {testPhase === "crash" && (
                 <div className="absolute inset-0 bg-red-950/80 flex flex-col items-center justify-center z-20 animate-fade-in">
                   <Flame className="w-8 h-8 text-red-500 animate-bounce" />
-                  <span className="text-xs font-mono font-bold text-red-400 mt-1 uppercase tracking-wider">
+                  <span className="text-sm font-mono font-bold text-red-400 mt-1 uppercase tracking-wider">
                     HARDWARE DEADLOCK
                   </span>
                 </div>
@@ -327,7 +327,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
             {/* Altitude slider feedback */}
             <div className="w-full mt-4 bg-gray-950 p-2.5 rounded border border-gray-800 flex items-center justify-between">
-              <span className="text-xs font-mono text-gray-400 flex items-center gap-1">
+              <span className="text-sm font-mono text-gray-400 flex items-center gap-1">
                 高度上限 (5.0m):
               </span>
               <span className="text-sm font-mono font-bold text-teal-400">
@@ -338,11 +338,11 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
           {/* Verification execution command buttons */}
           <div className="bg-gray-900/40 p-4 rounded-lg border border-gray-800 flex flex-col space-y-3">
-            <span className="text-xs text-gray-300 font-sans font-medium">起飞诊断执行中枢</span>
+            <span className="text-sm text-gray-300 font-sans font-medium">起飞诊断执行中枢</span>
             
             {/* Simulation Phase Progress */}
             <div className="space-y-1">
-              <div className="flex justify-between text-[11px] font-mono text-gray-400">
+              <div className="flex justify-between text-[14px] font-mono text-gray-400">
                 <span>当前阶段: 
                   <span className="text-teal-400 ml-1 uppercase font-bold">
                     {testPhase === "idle" && "未开始"}
@@ -375,7 +375,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               <button
                 id="btn-start-test-flight"
                 onClick={startTest}
-                className="py-2.5 px-3 rounded bg-teal-500 hover:bg-teal-400 text-slate-950 font-sans text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-lg shadow-teal-500/10"
+                className="py-2.5 px-3 rounded bg-teal-500 hover:bg-teal-400 text-slate-950 font-sans text-sm font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-lg shadow-teal-500/10"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 虚拟试飞验证
@@ -383,7 +383,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               <button
                 id="btn-reset-test-flight"
                 onClick={resetTest}
-                className="py-2.5 px-3 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 font-sans text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="py-2.5 px-3 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 font-sans text-sm flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 复位就绪
@@ -396,15 +396,15 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
         <div className="lg:col-span-5 grid grid-cols-2 gap-4">
           {/* Telemetry Panel A: Sensor Bus */}
           <div className="bg-gray-900/60 p-3 rounded-lg border border-gray-800/60 space-y-2.5">
-            <span className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-1">
+            <span className="text-[12px] font-mono text-gray-500 uppercase flex items-center gap-1">
               <Zap className="w-3 h-3 text-amber-400" />
               飞控底层时钟和总线状态
             </span>
             
-            <div className="space-y-2 text-xs">
+            <div className="space-y-2 text-sm">
               <div className="flex justify-between items-center py-1 border-b border-gray-800/40">
                 <span className="text-gray-400 font-mono">IMU姿态传感器</span>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                <span className={`px-2 py-0.5 rounded text-[12px] font-mono font-bold ${
                   telemetry.sensorStatus.imu === "OK" 
                   ? "bg-teal-950 text-teal-400 border border-teal-500/20"
                   : telemetry.sensorStatus.imu === "DRIFT"
@@ -417,7 +417,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
               <div className="flex justify-between items-center py-1 border-b border-gray-800/40">
                 <span className="text-gray-400 font-mono">电子罗盘总线</span>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                <span className={`px-2 py-0.5 rounded text-[12px] font-mono font-bold ${
                   telemetry.sensorStatus.compass === "OK"
                   ? "bg-teal-950 text-teal-400 border border-teal-500/20"
                   : "bg-red-950 text-red-500 border border-red-500/20"
@@ -433,7 +433,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
               <div className="flex justify-between items-center py-1">
                 <span className="text-gray-400 font-mono">GPS定位锁</span>
-                <span className="font-mono text-teal-400 text-[11px] font-semibold flex items-center gap-1">
+                <span className="font-mono text-teal-400 text-[14px] font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
                   {telemetry.gpsLock}
                 </span>
@@ -442,7 +442,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
             
             {/* System Jitter Bar */}
             <div className="pt-2 border-t border-gray-800">
-              <div className="flex justify-between text-[11px] font-mono text-gray-400 mb-1">
+              <div className="flex justify-between text-[14px] font-mono text-gray-400 mb-1">
                 <span>IMU杂音频频漂移率</span>
                 <span className={telemetry.vibration > 0.6 ? "text-amber-400" : "text-teal-400"}>
                   {telemetry.vibration} g-vibe
@@ -465,7 +465,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
           {/* Telemetry Panel B: Motor ESC Output */}
           <div className="bg-gray-900/60 p-3 rounded-lg border border-gray-800/60 flex flex-col justify-between">
-            <span className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-1">
+            <span className="text-[12px] font-mono text-gray-500 uppercase flex items-center gap-1">
               <Wind className="w-3 h-3 text-sky-400" />
               四轴电机脉宽电调输出(ESC)
             </span>
@@ -477,7 +477,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
                 
                 return (
                   <div key={idx} className="bg-gray-950 p-2 rounded border border-gray-900">
-                    <div className="flex justify-between items-center text-[10px] font-mono mb-1">
+                    <div className="flex justify-between items-center text-[12px] font-mono mb-1">
                       <span className="text-gray-400">电机 #{idx+1}</span>
                       <span className={isOutlier ? "text-red-400 animate-pulse font-bold" : "text-gray-500"}>
                         {temp}°C
@@ -497,7 +497,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
                         />
                       </div>
                     </div>
-                    <div className="text-[9px] font-mono text-gray-400 text-right mt-1">
+                    <div className="text-[14px] font-mono text-gray-400 text-right mt-1">
                       {testPhase === "idle" ? "1000us" : isOutlier ? "65535us!!(溢出)" : `${1000 + (testPhase === "calibration" ? 0 : (testPhase === "arming" ? 100 : (testPhase === "landing" ? 150 : 450 + (idx % 2 === 0 ? 30 : -20))))}us`}
                     </div>
                   </div>
@@ -505,19 +505,19 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               })}
             </div>
             
-            <div className="text-[9px] font-mono text-gray-400 bg-gray-950/60 p-1 rounded border border-gray-800/40 text-center">
+            <div className="text-[14px] font-mono text-gray-400 bg-gray-950/60 p-1 rounded border border-gray-800/40 text-center">
               DShot-D2 (1.2MHz) 时钟波特通道
             </div>
           </div>
 
           {/* Real-time System Debug Console Terminal Logger */}
           <div className="col-span-2 bg-gray-950 p-3 rounded-lg border border-gray-800 text-left font-mono min-h-36 max-h-36 flex flex-col justify-between">
-            <span className="text-[10px] text-teal-400 border-b border-gray-800 pb-1 flex items-center justify-between">
+            <span className="text-[12px] text-teal-400 border-b border-gray-800 pb-1 flex items-center justify-between">
               <span>🖥️ 飞行诊断终端</span>
               <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
             </span>
             
-            <div className="overflow-y-auto max-h-24 scrollbar-thin scrollbar-thumb-gray-800 text-[11px] text-gray-300 space-y-1 my-1.5 flex-grow font-mono">
+            <div className="overflow-y-auto max-h-24 scrollbar-thin scrollbar-thumb-gray-800 text-[14px] text-gray-300 space-y-1 my-1.5 flex-grow font-mono">
               {flightLogs.map((log, index) => (
                 <div key={index} className="leading-5">
                   {log.includes("🚨") || log.includes("FAIL") ? (
@@ -538,7 +538,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
         {/* Right Layperson-friendly Verdict & Explanations */}
         <div className="lg:col-span-3 bg-gray-900/40 p-4 rounded-lg border border-gray-800 flex flex-col justify-between">
           <div className="space-y-3.5">
-              <span className="text-xs text-gray-400 font-sans font-medium uppercase tracking-wider block border-b border-gray-800 pb-1.5">
+              <span className="text-sm text-gray-400 font-sans font-medium uppercase tracking-wider block border-b border-gray-800 pb-1.5">
                 ⚖️ 起飞合规裁决
               </span>
 
@@ -558,7 +558,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
                   <div className="font-sans font-bold text-sm">
                     {selectedVersion.id === "rel_2" ? "限飞警告起飞" : "绿色合规可起飞"}
                   </div>
-                  <div className="text-[11px] text-gray-300 mt-1 leading-5">
+                  <div className="text-[14px] text-gray-300 mt-1 leading-5">
                     {selectedVersion.id === "rel_2" 
                       ? "允许低负荷物理试飞，禁止开启大姿态横滚打杆及高振动黑匣子保存。"
                       : "各总线控制时间片处于健康时域，允许一切真机极限载荷测试。"}
@@ -570,7 +570,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
                 <ShieldAlert className="w-5 h-5 text-red-400 mt-0.5 shrink-0" />
                 <div>
                   <div className="font-sans font-bold text-sm">一票否决：绝对禁止起飞</div>
-                  <div className="text-[11px] text-gray-300 mt-1 leading-5">
+                  <div className="text-[14px] text-gray-300 mt-1 leading-5">
                     前置高危硬件定时器与DMA资源重合碰撞。起飞解锁极易直接引燃电机造成火灾事故！
                   </div>
                 </div>
@@ -579,18 +579,18 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
             {/* Simple corrective guide */}
             <div className="space-y-1.5">
-              <span className="text-[11px] text-gray-400 font-sans font-medium">💡 故障场景推演：</span>
-              <div className="bg-gray-950/60 p-2.5 rounded border border-gray-800 text-[11px] text-gray-300 leading-relaxed font-sans">
+              <span className="text-[14px] text-gray-400 font-sans font-medium">💡 故障场景推演：</span>
+              <div className="bg-gray-950/60 p-2.5 rounded border border-gray-800 text-[14px] text-gray-300 leading-relaxed font-sans">
                 {selectedVersion.flightTestOutcome.detailedCrashScenario}
               </div>
             </div>
           </div>
 
           <div className="pt-3 border-t border-gray-800 space-y-1.5">
-            <span className="text-[11px] text-amber-400 font-sans font-medium flex items-center gap-1">
+            <span className="text-[14px] text-amber-400 font-sans font-medium flex items-center gap-1">
               🛠️ 修复建议：
             </span>
-            <div className="text-[11px] leading-relaxed text-gray-300 font-sans">
+            <div className="text-[14px] leading-relaxed text-gray-300 font-sans">
               {selectedVersion.flightTestOutcome.laymanRemedy}
             </div>
           </div>

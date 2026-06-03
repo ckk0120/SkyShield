@@ -55,7 +55,7 @@ export default function ClassifierModule() {
             <Cpu className="w-5 h-5 text-[#00D2FF]" />
             云端 LLM 软硬交互底层语义分类器 (Semantic Classifier)
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-sm text-gray-400">
             基于大语言模型区分纯算数层与物理硬件操作层，零温约束下杜绝幻觉误判。
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function ClassifierModule() {
         <div className="flex md:justify-end">
           <button
             id="btn-toggle-prompt-drawer"
-              className="px-3.5 py-1.5 rounded border border-gray-700 bg-gray-900/60 hover:bg-gray-800 text-xs font-sans text-sky-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-1.5 rounded border border-gray-700 bg-gray-900/60 hover:bg-gray-800 text-sm font-sans text-sky-400 flex items-center gap-1.5 transition-colors cursor-pointer"
             onClick={() => setShowPromptDrawer(!showPromptDrawer)}
           >
             <LayersIcon className="w-3.5 h-3.5" />
@@ -75,10 +75,10 @@ export default function ClassifierModule() {
       {/* Extensible Prompt Template Drawer */}
       {showPromptDrawer && (
         <div className="bg-gray-950 p-4 rounded-xl border border-dashed border-gray-800 animate-slide-down space-y-3">
-          <span className="text-[10px] font-mono text-gray-500 uppercase block">
+          <span className="text-[12px] font-mono text-gray-500 uppercase block">
             🔒 核心零温大模型推理前置约束条件 (System Schema Prompts)
           </span>
-          <pre className="text-[10.5px] font-mono text-teal-400 leading- relaxed bg-gray-950 p-3 rounded border border-gray-900 overflow-x-auto whitespace-pre-wrap select-all">
+          <pre className="text-[13px] font-mono text-teal-400 leading- relaxed bg-gray-950 p-3 rounded border border-gray-900 overflow-x-auto whitespace-pre-wrap select-all">
 {`You are an isolated binary-level static analyzer for flight controllers. Return only valid raw JSON conforming to this schema:
 {
   "function_name": "string",
@@ -93,7 +93,7 @@ Strict Rules:
 2. If code only performs floating math point (kp / dt), output hardware_dependent=0.
 3. Completely avoid verbose textual conversation. Execute zero-temperature deterministic output.`}
           </pre>
-          <p className="text-[9px] text-gray-500 font-sans leading-3">
+          <p className="text-[14px] text-gray-500 font-sans leading-3">
             LLM 注入强类型 JSON Schema 约束，消除模型幻觉与冗余输出，保证扫描结果稳定一致。
           </p>
         </div>
@@ -106,14 +106,14 @@ Strict Rules:
         <div className="lg:col-span-7 bg-[#111827] p-5 rounded-xl border border-gray-800 flex flex-col justify-between">
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-3">
-              <span className="text-xs font-mono text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-sm font-mono text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
                 <FileCode className="w-4 h-4 text-sky-400" />
                 无人机飞控底层物理函数库 (C++ source view)
               </span>
 
               {/* Snippet selector */}
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] text-gray-500 font-sans">预设源码:</span>
+                <span className="text-[12px] text-gray-500 font-sans">预设源码:</span>
                 <select
                   id="code-snippet-select"
                   value={selectedSnippet.id}
@@ -124,7 +124,7 @@ Strict Rules:
                       setIsCompleted(false);
                     }
                   }}
-                  className="bg-gray-950 border border-gray-800 rounded px-2.5 py-1 text-xs text-gray-300 font-mono focus:outline-none cursor-pointer"
+                  className="bg-gray-950 border border-gray-800 rounded px-2.5 py-1 text-sm text-gray-300 font-mono focus:outline-none cursor-pointer"
                 >
                   {MOCK_CODE_SNIPPETS.map((s) => (
                     <option key={s.id} value={s.id}>{s.title.split(" - ")[0]}</option>
@@ -137,7 +137,7 @@ Strict Rules:
             <div className="rounded-lg overflow-hidden border border-gray-800 bg-gray-950 flex flex-col">
               {/* Window chrome tab bar */}
               <div className="bg-gray-900 px-4 py-2 border-b border-gray-950 flex items-center justify-between">
-                <span className="text-[10px] font-mono text-gray-400">
+                <span className="text-[12px] font-mono text-gray-400">
                   {selectedSnippet.title}.cpp (read-only)
                 </span>
                 <span className="flex space-x-1">
@@ -147,21 +147,21 @@ Strict Rules:
                 </span>
               </div>
               
-              <pre className="p-4 text-[11px] font-mono text-gray-300 leading-relaxed overflow-x-auto whitespace-pre-wrap select-all">
+              <pre className="p-4 text-[14px] font-mono text-gray-300 leading-relaxed overflow-x-auto whitespace-pre-wrap select-all">
                 <code>{selectedSnippet.code}</code>
               </pre>
             </div>
           </div>
 
           <div className="pt-4 border-t border-gray-800/60 flex items-center justify-between">
-            <span className="text-[10px] text-gray-500 font-mono">
+            <span className="text-[12px] text-gray-500 font-mono">
               所属层级：{selectedSnippet.subsystem}
             </span>
             <button
               id="btn-run-semantic-classifier"
               disabled={isAnalyzing}
               onClick={triggerSemanticAnalysis}
-              className="px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-sans font-bold text-xs rounded transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+              className="px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-sans font-bold text-sm rounded transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5" />
               {isAnalyzing ? "模型深度分析中..." : "语义解析静态分类"}
@@ -172,13 +172,13 @@ Strict Rules:
         {/* Right Side: LLM Analysis Panel & Steps terminal logs (5 cols) */}
         <div className="lg:col-span-5 bg-[#111827] p-5 rounded-xl border border-gray-800 flex flex-col justify-between space-y-5">
           <div className="space-y-4">
-            <span className="text-xs font-mono text-gray-400 uppercase tracking-wider block border-b border-gray-800 pb-2 flex items-center gap-1.5">
+            <span className="text-sm font-mono text-gray-400 uppercase tracking-wider block border-b border-gray-800 pb-2 flex items-center gap-1.5">
               <Terminal className="w-4 h-4 text-[#00D2FF]" />
               LLM 模型运算执行控制台 (LLM COMPILER)
             </span>
 
             {/* Logging terminal lines */}
-            <div className="bg-gray-950 p-3.5 rounded-lg border border-gray-900 font-mono text-[10.5px] text-gray-400 min-h-36 max-h-36 overflow-y-auto space-y-1.5">
+            <div className="bg-gray-950 p-3.5 rounded-lg border border-gray-900 font-mono text-[13px] text-gray-400 min-h-36 max-h-36 overflow-y-auto space-y-1.5">
               {analysisLogs.length === 0 && !isAnalyzing ? (
                 <div className="text-gray-600 italic text-center pt-8">
                   [待命] 点击左侧“语义解析静态分类”触发模型
@@ -207,13 +207,13 @@ Strict Rules:
 
             {/* Results Output Block if completed */}
             {isCompleted && (
-              <div className="space-y-3 animate-fade-in text-xs font-sans">
+              <div className="space-y-3 animate-fade-in text-sm font-sans">
                 
                 {/* Structured JSON verdict schema block */}
                 <div className="bg-slate-900/40 border border-gray-800 p-3.5 rounded-lg space-y-3.5">
-                  <div className="flex justify-between items-center text-[10px] font-mono border-b border-gray-800 pb-1.5">
+                  <div className="flex justify-between items-center text-[12px] font-mono border-b border-gray-800 pb-1.5">
                     <span className="text-gray-400">📊 大模型结构化数据边 (STRUCT OUT)</span>
-                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${
+                    <span className={`px-2 py-0.5 rounded text-[14px] font-bold ${
                       selectedSnippet.isHardwareDependent 
                       ? 'bg-red-950 text-red-400 border border-red-500/10' 
                       : 'bg-teal-950 text-teal-400 border border-teal-500/10'
@@ -222,14 +222,14 @@ Strict Rules:
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3 text-xs leading-4">
+                  <div className="grid grid-cols-2 gap-3 text-sm leading-4">
                     <div>
                       <span className="text-gray-500 font-mono block text-[9.5px]">解析方法名称:</span>
                       <strong className="text-gray-300 font-mono font-semibold block truncate mt-0.5">{selectedSnippet.title.split(" - ")[0]}</strong>
                     </div>
                     <div>
                       <span className="text-gray-500 font-sans block text-[9.5px]">大模型起降安全预判:</span>
-                      <strong className={`block text-xs mt-0.5 font-bold ${
+                      <strong className={`block text-sm mt-0.5 font-bold ${
                         selectedSnippet.isHardwareDependent ? 'text-red-400 animate-pulse' : 'text-teal-400'
                       }`}>
                         {selectedSnippet.isHardwareDependent ? '🔴 高危挂锁' : '🟢 极其安全'}
@@ -238,8 +238,8 @@ Strict Rules:
                   </div>
 
                   <div className="pt-2.5 border-t border-gray-800 mt-2">
-                    <span className="text-[10px] text-gray-400 font-mono block mb-1">大模型对源文件之语义识别诊断：</span>
-                    <p className="text-gray-300 leading-relaxed text-[11px] bg-gray-950/20 p-2.5 rounded border border-gray-800/40">
+                    <span className="text-[12px] text-gray-400 font-mono block mb-1">大模型对源文件之语义识别诊断：</span>
+                    <p className="text-gray-300 leading-relaxed text-[14px] bg-gray-950/20 p-2.5 rounded border border-gray-800/40">
                       {selectedSnippet.semanticAnalysis}
                     </p>
                   </div>
@@ -251,16 +251,16 @@ Strict Rules:
 
           {/* Corrective Action for Ordinary User */}
           {isCompleted && (
-            <div className="pt-3 border-t border-gray-800 space-y-2 text-xs font-sans">
-                <span className="text-[11px] font-bold text-red-400 flex items-center gap-1">
+            <div className="pt-3 border-t border-gray-800 space-y-2 text-sm font-sans">
+                <span className="text-[14px] font-bold text-red-400 flex items-center gap-1">
                   <ShieldAlert className="w-4 h-4" />
                   起飞安全性评估：
                 </span>
-              <p className="text-gray-300 leading-relaxed text-[11px]">
+              <p className="text-gray-300 leading-relaxed text-[14px]">
                 {selectedSnippet.takeoffSafetyImpact}
               </p>
               
-              <div className="mt-2 text-gray-300 leading-relaxed text-[11px] bg-slate-900 border border-slate-800 p-2.5 rounded">
+              <div className="mt-2 text-gray-300 leading-relaxed text-[14px] bg-slate-900 border border-slate-800 p-2.5 rounded">
                 <span className="text-sky-400 font-semibold">🔧 修正飞行安全配方建议：</span>
                 {selectedSnippet.remediationAction}
               </div>

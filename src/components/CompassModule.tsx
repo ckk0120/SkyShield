@@ -45,14 +45,14 @@ export default function CompassModule() {
             <Compass className="w-5 h-5 text-amber-500" />
             版本缺陷预测罗盘与因果拓扑图
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-sm text-gray-400">
             基于 DiBS 动态贝叶斯网络进行因果推断，量化版本迭代中隐性风险传递路径与影响权重。
           </p>
         </div>
 
         {/* Dropdown Version Selector */}
         <div className="flex items-center space-x-2">
-          <span className="text-xs text-gray-400 font-sans">选择评估版本：</span>
+          <span className="text-sm text-gray-400 font-sans">选择评估版本：</span>
           <select
             id="vcompass-release-select"
             value={selectedVersion.id}
@@ -62,7 +62,7 @@ export default function CompassModule() {
                 setSelectedVersion(selected);
               }
             }}
-            className="bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-amber-500 font-sans cursor-pointer"
+            className="bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-sm text-gray-200 focus:outline-none focus:border-amber-500 font-sans cursor-pointer"
           >
             {MOCK_RELIABLE_VERSIONS.map((v) => (
               <option key={v.id} value={v.id}>
@@ -78,7 +78,7 @@ export default function CompassModule() {
         
         {/* Left Column (5 cols): Gauge dial and Risk Level details */}
         <div className="lg:col-span-5 bg-[#111827] p-5 rounded-xl border border-gray-800 flex flex-col justify-between items-center space-y-4">
-          <span className="text-xs font-mono text-gray-400 uppercase tracking-wider self-start flex items-center gap-1.5">
+          <span className="text-sm font-mono text-gray-400 uppercase tracking-wider self-start flex items-center gap-1.5">
             <Activity className="w-4 h-4 text-amber-500 animate-pulse" />
             版本安全罗盘与仪表盘 (System Safety Dial)
           </span>
@@ -164,14 +164,14 @@ export default function CompassModule() {
                 {selectedVersion.safetyScore}
               </text>
               <text x="150" y="226" textAnchor="middle" fill="currentColor"
-                    className="text-xs font-mono text-gray-400 tracking-widest">
+                    className="text-sm font-mono text-gray-400 tracking-widest">
                 SAFETY SCORE
               </text>
             </svg>
           </div>
 
           <div className={`p-4 rounded-lg border w-full text-center ${getRiskBgClass(selectedVersion.activeRiskLevel)}`}>
-            <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block mb-1">
+            <span className="text-[12px] font-mono text-gray-400 uppercase tracking-widest block mb-1">
               当前版本风险研判：
             </span>
             <strong className={`text-sm font-sans font-extrabold ${getRiskColorClass(selectedVersion.activeRiskLevel)} flex items-center justify-center gap-1`}>
@@ -179,7 +179,7 @@ export default function CompassModule() {
               {selectedVersion.activeRiskLevel === "WARNING" && "🟡 注意温漂 (防颤飞起)"}
               {selectedVersion.activeRiskLevel === "TAKEOFF_DENIED" && "🔴 危险挂载 (强否决起飞)"}
             </strong>
-            <p className="text-[11px] text-gray-300 leading-relaxed font-sans mt-2">
+            <p className="text-[14px] text-gray-300 leading-relaxed font-sans mt-2">
               {selectedVersion.statusDescription}
             </p>
           </div>
@@ -188,12 +188,12 @@ export default function CompassModule() {
         {/* Right Column (7 cols): Bayesian causal metrics table */}
         <div className="lg:col-span-7 bg-[#111827] p-5 rounded-xl border border-gray-800 flex flex-col justify-between">
           <div className="space-y-4">
-            <span className="text-xs font-mono text-gray-400 uppercase tracking-wider block flex items-center gap-1.5">
+            <span className="text-sm font-mono text-gray-400 uppercase tracking-wider block flex items-center gap-1.5">
               <BarChart3 className="w-4 h-4 text-amber-500" />
               DiBS 因果元因链矩阵因子 (Causal Weight Assessment)
             </span>
             
-            <p className="text-[11px] text-gray-400 font-sans">
+            <p className="text-[14px] text-gray-400 font-sans">
               因果门限切分后的底层指标对缺陷判定的贡献权重，直接反映代码重构方向：
             </p>
 
@@ -203,19 +203,19 @@ export default function CompassModule() {
                 return (
                   <div key={idx} className="bg-gray-950 p-3 rounded-lg border border-gray-900 flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-mono font-semibold text-gray-300 block">{m.name}</span>
-                      <span className="text-[10px] text-gray-500 font-sans block mt-0.5">{m.description}</span>
+                      <span className="text-sm font-mono font-semibold text-gray-300 block">{m.name}</span>
+                      <span className="text-[12px] text-gray-500 font-sans block mt-0.5">{m.description}</span>
                     </div>
 
                     <div className="text-right flex items-center space-x-4">
                       <div className="font-mono">
                         <span className="text-sm font-bold text-gray-200">{m.value}</span>
-                        <span className="text-[10px] text-gray-400 ml-0.5">{m.unit}</span>
+                        <span className="text-[12px] text-gray-400 ml-0.5">{m.unit}</span>
                       </div>
                       
                       {/* Weight pill */}
                       <div className="w-24 text-center">
-                        <span className={`text-[10px] px-2 py-0.5 rounded font-mono font-bold ${
+                        <span className={`text-[12px] px-2 py-0.5 rounded font-mono font-bold ${
                           isComment 
                           ? m.value > 100 ? 'bg-teal-950 text-teal-400' : 'bg-amber-950 text-amber-400' 
                           : Math.abs(m.causalWeight) >= 0.35 
@@ -232,7 +232,7 @@ export default function CompassModule() {
             </div>
           </div>
 
-          <div className="pt-3 border-t border-gray-800/60 flex items-start space-x-2 text-[10.5px] text-gray-400 font-sans">
+          <div className="pt-3 border-t border-gray-800/60 flex items-start space-x-2 text-[13px] text-gray-400 font-sans">
             <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
             <span>
               <strong>说明：</strong>安全注释量 (hw_comments) 具备负向因果权重，注释越完善，缺陷概率越低。
@@ -245,10 +245,10 @@ export default function CompassModule() {
       {/* Embedded Deep Bayesian Topological Graph */}
       <div className="bg-[#111827] p-5 rounded-xl border border-gray-800 space-y-4">
         <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-          <span className="text-xs font-mono text-gray-400 uppercase tracking-wider block">
+          <span className="text-sm font-mono text-gray-400 uppercase tracking-wider block">
             🕸️ DiBS 贝叶斯因果网络拓扑图
           </span>
-          <span className="text-[10px] text-gray-500 font-mono">
+          <span className="text-[12px] text-gray-500 font-mono">
             节点间连线对应 graphLinks，方向代表因果传递
           </span>
         </div>
@@ -325,17 +325,17 @@ export default function CompassModule() {
                       <rect x={p.x} y={p.y} width={p.w} height={p.h} rx={8}
                             fill={s.fill} stroke={s.stroke} strokeWidth={s.sw}/>
                       <text x={p.x + p.w/2} y={p.y + 24} textAnchor="middle"
-                            fill={s.text} fontSize="12" fontFamily="sans-serif" fontWeight="600">{label}</text>
+                            fill={s.text} fontSize="14" fontFamily="sans-serif" fontWeight="600">{label}</text>
                       <text x={p.x + p.w/2} y={p.y + 46} textAnchor="middle"
-                            fill={s.text} fontSize="13" fontFamily="monospace" fontWeight="700">{node.value}</text>
+                            fill={s.text} fontSize="15" fontFamily="monospace" fontWeight="700">{node.value}</text>
                     </g>
                   );
                 })}
 
                 {/* Column headers */}
-                <text x="102" y="10" textAnchor="middle" fill="#6B7280" fontSize="10" fontFamily="monospace">底层原始指标</text>
-                <text x="377" y="62" textAnchor="middle" fill="#6B7280" fontSize="10" fontFamily="monospace">因果中间变量</text>
-                <text x="622" y="116" textAnchor="middle" fill="#6B7280" fontSize="10" fontFamily="monospace">预警概率输出</text>
+                <text x="102" y="10" textAnchor="middle" fill="#6B7280" fontSize="13" fontFamily="monospace">底层原始指标</text>
+                <text x="377" y="62" textAnchor="middle" fill="#6B7280" fontSize="13" fontFamily="monospace">因果中间变量</text>
+                <text x="622" y="116" textAnchor="middle" fill="#6B7280" fontSize="13" fontFamily="monospace">预警概率输出</text>
               </svg>
             );
           })()}

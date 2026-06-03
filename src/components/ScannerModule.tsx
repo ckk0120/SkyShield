@@ -49,7 +49,7 @@ export default function ScannerModule() {
             <Cpu className="w-5 h-5 text-sky-400" />
             固件软硬交互热点一键扫描器 (Hotspot Scanner)
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-sm text-gray-400">
             聚焦高密度硬件交互代码，快速定位 SPI/I2C/DMA/ISR 总线中的高频风险点。
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function ScannerModule() {
               setSelectedPreset(preset);
               setSelectedFile(preset === "ArduPilot" ? ARDUPILOT_FILES[0] : BETAFLIGHT_FILES[0]);
             }}
-            className="bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-sky-500 cursor-pointer font-sans"
+            className="bg-gray-900 border border-gray-700 rounded px-3 py-1.5 text-sm text-gray-200 focus:outline-none focus:border-sky-500 cursor-pointer font-sans"
           >
             <option value="ArduPilot">ArduPilot (多层宏框架)</option>
             <option value="Betaflight">Betaflight (单线程轮询)</option>
@@ -73,7 +73,7 @@ export default function ScannerModule() {
             id="btn-trigger-hotspot-scan"
             onClick={handleScan}
             disabled={isScanning}
-            className="bg-sky-500 text-slate-950 font-sans font-bold text-xs px-4 py-2 rounded hover:bg-sky-400 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            className="bg-sky-500 text-slate-950 font-sans font-bold text-sm px-4 py-2 rounded hover:bg-sky-400 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isScanning ? 'animate-spin' : ''}`} />
             {isScanning ? `${scanProgress}% 扫描中...` : '一键热点漏洞扫描'}
@@ -83,7 +83,7 @@ export default function ScannerModule() {
 
       {isScanning && (
         <div className="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-2">
-          <div className="flex justify-between text-xs font-mono text-gray-400">
+          <div className="flex justify-between text-sm font-mono text-gray-400">
             <span>正在建立软硬件指令拓扑树...</span>
             <span>{scanProgress}%</span>
           </div>
@@ -102,22 +102,22 @@ export default function ScannerModule() {
           {/* Hardware-Software Coupling Interactive Bar */}
           <div className="bg-[#111827] p-5 rounded-xl border border-gray-800 space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-xs font-mono text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-sm font-mono text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
                 <Layers className="w-4 h-4 text-sky-400" />
                 软硬交互拓扑热力特征图 (2/8 帕累托特征分布)
               </span>
-              <span className="text-[10px] bg-red-950 text-red-400 px-2 py-0.5 rounded font-mono font-bold border border-red-500/10">
+              <span className="text-[12px] bg-red-950 text-red-400 px-2 py-0.5 rounded font-mono font-bold border border-red-500/10">
                 帕累托高危层 (前 20% 高风险核心交互文件)
               </span>
             </div>
 
             <div className="bg-gray-950 p-4 rounded-lg border border-gray-900 space-y-3">
-              <p className="text-[11px] text-gray-400 font-sans">
+              <p className="text-[14px] text-gray-400 font-sans">
                 按风险评分降序排列的固件文件热力分布（二八法则：前 20% 文件贡献 80% 风险）：
               </p>
               
               {/* SVG-based Dynamic Bar Chart which acts as the Heatmap */}
-              <div className="space-y-2.5 pt-2">
+              <div className="space-y-2 pt-2">
                 {sortedFilesForPareto.map((file, idx) => {
                   const isHighRisk = file.riskScore >= 75;
                   const barPercent = file.riskScore;
@@ -126,47 +126,39 @@ export default function ScannerModule() {
                     <div 
                       key={idx} 
                       onClick={() => setSelectedFile(file)}
-                      className={`flex items-center space-x-3 cursor-pointer group p-1.5 rounded transition-all ${
+                      className={`grid items-center gap-2 cursor-pointer group py-2 px-3 rounded transition-all ${
                         selectedFile.name === file.name 
-                        ? 'bg-slate-800/60 border-l-4 border-sky-400 pl-2' 
+                        ? 'bg-slate-800/60 border-l-4 border-sky-400' 
                         : 'hover:bg-slate-800/25 border-l-4 border-transparent'
                       }`}
+                      style={{ gridTemplateColumns: '20px 160px 1fr auto' }}
                     >
-                      {/* Rank badge */}
-                      <span className={`w-5 text-xs font-mono font-bold ${
-                        isHighRisk ? 'text-red-400' : 'text-gray-500'
-                      }`}>
+                      <span className={`text-sm font-mono font-bold ${isHighRisk ? 'text-red-400' : 'text-gray-500'}`}>
                         #{idx + 1}
                       </span>
-                      {/* Name of file and subsystem */}
-                      <div className="w-44 text-xs font-mono truncate text-gray-300 group-hover:text-sky-300 transition-colors">
-                        {file.name}
-                        <span className="block text-[9px] text-gray-500 font-sans">{file.hwSubsystem} 外设总线</span>
+
+                      <div className="min-w-0">
+                        <div className="text-sm font-mono truncate text-gray-300 group-hover:text-sky-300">{file.name}</div>
+                        <div className="text-[11px] text-gray-500 font-sans">{file.hwSubsystem}</div>
                       </div>
-                      {/* Horizontal custom bar indicator */}
-                      <div className="flex-grow bg-gray-900 h-4.5 rounded overflow-hidden relative border border-gray-800">
+
+                      <div className="h-6 bg-gray-900 rounded-full overflow-hidden relative border border-gray-800">
                         <div 
-                          className={`h-full transition-all duration-500 ${
-                            isHighRisk 
-                            ? 'bg-gradient-to-r from-red-600 to-amber-500 group-hover:brightness-110' 
-                            : 'bg-gradient-to-r from-teal-600 to-sky-500'
+                          className={`h-full transition-all duration-500 rounded-full ${
+                            isHighRisk ? 'bg-gradient-to-r from-red-600 to-amber-500' : 'bg-gradient-to-r from-teal-600 to-sky-500'
                           }`}
                           style={{ width: `${barPercent}%` }}
                         />
-                        <span className="absolute right-2 top-0.5 text-[9px] font-mono font-bold text-gray-200">
-                          {file.riskScore}点(高危交互)
+                        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-sm font-mono font-bold text-gray-200">
+                          {file.riskScore}点
                         </span>
                       </div>
-                      {/* Tag indicating status */}
-                      <div className="w-16 text-right">
-                        <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                          isHighRisk 
-                          ? 'bg-red-950 text-red-400 border border-red-500/10' 
-                          : 'bg-teal-950 text-teal-400 border border-teal-500/10'
-                        }`}>
-                          {isHighRisk ? '高危/热点' : '正常/防溢'}
-                        </span>
-                      </div>
+
+                      <span className={`text-sm font-mono font-bold px-2 py-0.5 rounded whitespace-nowrap ${
+                        isHighRisk ? 'bg-red-950 text-red-400 border border-red-500/10' : 'bg-teal-950 text-teal-400 border border-teal-500/10'
+                      }`}>
+                        {isHighRisk ? '高危/热点' : '正常/防溢'}
+                      </span>
                     </div>
                   );
                 })}
@@ -177,7 +169,7 @@ export default function ScannerModule() {
           {/* Interactive File Table List */}
           <div className="bg-[#111827] p-5 rounded-xl border border-gray-800 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <span className="text-xs font-mono text-gray-400 uppercase tracking-wider block">
+              <span className="text-sm font-mono text-gray-400 uppercase tracking-wider block">
                 📂 固件编译文件清单列表 ({filteredFiles.length} 个对象)
               </span>
               
@@ -190,22 +182,22 @@ export default function ScannerModule() {
                   placeholder="搜索文件名、外设Subsystem..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded pl-8 pr-3 py-1 text-xs text-gray-300 focus:outline-none focus:border-sky-500 font-sans"
+                  className="w-full bg-gray-950 border border-gray-800 rounded pl-8 pr-3 py-1 text-sm text-gray-300 focus:outline-none focus:border-sky-500 font-sans"
                 />
               </div>
             </div>
 
             <div className="overflow-x-auto rounded-lg border border-gray-800">
-              <table className="w-full text-left border-collapse text-xs font-mono">
+              <table className="w-full text-left border-collapse text-[13px] font-mono">
                 <thead>
                   <tr className="bg-gray-900 border-b border-gray-800 text-gray-400">
-                    <th className="p-3">文件全称</th>
-                    <th className="p-3">外设通信域</th>
-                    <th className="p-3 text-right">外设机器行码</th>
-                    <th className="p-3 text-right">指令调用频级</th>
-                    <th className="p-3 text-right">安全熵系数</th>
-                    <th className="p-3 text-right">热点风险</th>
-                    <th className="p-3 text-center">起飞干扰</th>
+                    <th className="px-2 py-2.5">文件全称</th>
+                    <th className="px-2 py-2.5">外设通信域</th>
+                    <th className="px-2 py-2.5 text-right">外设机器行码</th>
+                    <th className="px-2 py-2.5 text-right">指令调用频级</th>
+                    <th className="px-2 py-2.5 text-right">安全熵系数</th>
+                    <th className="px-2 py-2.5 text-right">热点风险</th>
+                    <th className="px-2 py-2.5 text-center">起飞干扰</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-800">
@@ -221,21 +213,21 @@ export default function ScannerModule() {
                           : 'hover:bg-slate-900/50 text-gray-300'
                         }`}
                       >
-                        <td className="p-3 font-semibold truncate max-w-[200px]" title={file.path}>
+                        <td className="px-2 py-2.5 font-semibold truncate max-w-[180px]" title={file.path}>
                           {file.name}
                         </td>
-                        <td className="p-3">
-                          <span className="px-2 py-0.5 rounded bg-gray-950 border border-gray-800 font-bold text-gray-400 text-[10px]">
+                        <td className="px-2 py-2.5">
+                          <span className="px-1.5 py-0.5 rounded bg-gray-950 border border-gray-800 font-bold text-gray-400 text-[11px]">
                             {file.hwSubsystem}
                           </span>
                         </td>
-                        <td className="p-3 text-right text-gray-400">{file.hwCodelines} 行</td>
-                        <td className="p-3 text-right text-gray-400">{file.hwFuncCalls} 次</td>
-                        <td className="p-3 text-right text-gray-400 font-bold">{(file.academicComplexity).toFixed(2)}</td>
-                        <td className="p-3 text-right text-amber-500 font-bold">
+                        <td className="px-2 py-2.5 text-right text-gray-400">{file.hwCodelines} 行</td>
+                        <td className="px-2 py-2.5 text-right text-gray-400">{file.hwFuncCalls} 次</td>
+                        <td className="px-2 py-2.5 text-right text-gray-400 font-bold">{(file.academicComplexity).toFixed(2)}</td>
+                        <td className="px-2 py-2.5 text-right text-amber-500 font-bold">
                           {file.riskScore}%
                         </td>
-                        <td className="p-3 text-center">
+                        <td className="px-2 py-2.5 text-center">
                           <span className={`inline-block w-2.5 h-2.5 rounded-full ${
                             file.riskScore >= 75 
                             ? 'bg-red-500 animate-pulse' 
@@ -249,7 +241,7 @@ export default function ScannerModule() {
                   })}
                   {filteredFiles.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="p-6 text-center text-gray-500">
+                      <td colSpan={7} className="p-4 text-center text-gray-500">
                         未检索到任何符合筛选条件的代码热点文件
                       </td>
                     </tr>
@@ -271,7 +263,7 @@ export default function ScannerModule() {
                 <h4 className="font-sans font-medium text-gray-200 text-sm">
                   热点文件诊断哨所
                 </h4>
-                <p className="text-[10px] text-gray-400 font-mono">
+                <p className="text-[12px] text-gray-400 font-mono">
                   {selectedFile.path}
                 </p>
               </div>
@@ -280,23 +272,23 @@ export default function ScannerModule() {
             {/* Quick Metrics Cards */}
             <div className="grid grid-cols-3 gap-2">
               <div className="bg-gray-950 p-2 rounded border border-gray-900 text-center">
-                <span className="text-[9px] text-gray-500 font-sans block mb-0.5">硬件时钟码</span>
-                <span className="text-xs font-mono font-bold text-gray-300">{selectedFile.hwCodelines} 行</span>
+                <span className="text-[14px] text-gray-500 font-sans block mb-0.5">硬件时钟码</span>
+                <span className="text-sm font-mono font-bold text-gray-300">{selectedFile.hwCodelines} 行</span>
               </div>
               <div className="bg-gray-950 p-2 rounded border border-gray-900 text-center">
-                <span className="text-[9px] text-gray-500 font-sans block mb-0.5">HAL调用</span>
-                <span className="text-xs font-mono font-bold text-gray-300">{selectedFile.hwFuncCalls} 次</span>
+                <span className="text-[14px] text-gray-500 font-sans block mb-0.5">HAL调用</span>
+                <span className="text-sm font-mono font-bold text-gray-300">{selectedFile.hwFuncCalls} 次</span>
               </div>
               <div className="bg-gray-950 p-2 rounded border border-gray-900 text-center">
-                <span className="text-[9px] text-gray-500 font-sans block mb-0.5">安全信息熵</span>
-                <span className="text-xs font-mono font-bold text-teal-400">{selectedFile.academicComplexity}</span>
+                <span className="text-[14px] text-gray-500 font-sans block mb-0.5">安全信息熵</span>
+                <span className="text-sm font-mono font-bold text-teal-400">{selectedFile.academicComplexity}</span>
               </div>
             </div>
 
             {/* Practical fly warning */}
             <div className="space-y-1">
-              <span className="text-[10px] text-gray-400 font-sans font-semibold">起飞影响推断：</span>
-              <div className={`p-2.5 rounded text-[11px] font-sans leading-relaxed border ${
+              <span className="text-[12px] text-gray-400 font-sans font-semibold">起飞影响推断：</span>
+              <div className={`p-2.5 rounded text-[14px] font-sans leading-relaxed border ${
                 selectedFile.riskScore >= 75 
                 ? 'bg-red-950/30 border-red-500/20 text-red-300' 
                 : 'bg-teal-950/30 border-teal-500/20 text-teal-300'
@@ -307,8 +299,8 @@ export default function ScannerModule() {
 
             {/* Detail Analysis */}
             <div className="space-y-1">
-              <span className="text-[10px] text-gray-400 font-sans font-semibold">机制分析：</span>
-              <p className="bg-gray-950/40 p-2.5 rounded text-[11px] leading-relaxed text-gray-300 font-sans border border-gray-900">
+              <span className="text-[12px] text-gray-400 font-sans font-semibold">机制分析：</span>
+              <p className="bg-gray-950/40 p-2.5 rounded text-[14px] leading-relaxed text-gray-300 font-sans border border-gray-900">
                 {selectedFile.explanation}
               </p>
             </div>
@@ -316,11 +308,11 @@ export default function ScannerModule() {
 
           {/* Practical Solution Checklist */}
           <div className="border-t border-gray-800 pt-3.5 space-y-2">
-              <span className="text-[11px] font-sans font-bold text-sky-400 flex items-center gap-1">
+              <span className="text-[14px] font-sans font-bold text-sky-400 flex items-center gap-1">
                 <CheckSquare className="w-3.5 h-3.5" />
                 修复方案：
               </span>
-            <div className="bg-sky-950/10 border border-sky-500/10 rounded p-2.5 text-[11px] leading-relaxed text-gray-300 font-sans flex items-start space-x-2">
+            <div className="bg-sky-950/10 border border-sky-500/10 rounded p-2.5 text-[14px] leading-relaxed text-gray-300 font-sans flex items-start space-x-2">
               <ShieldCheck className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
               <span>
                 <strong>推荐重构补丁：</strong>
@@ -328,7 +320,7 @@ export default function ScannerModule() {
               </span>
             </div>
             
-            <p className="text-[9px] font-mono text-gray-500 text-center leading-3">
+            <p className="text-[14px] font-mono text-gray-500 text-center leading-3">
               补丁已同步至 SkyShield 云端，可导出至 Betaflight / ArduPilot 编译链。
             </p>
           </div>
