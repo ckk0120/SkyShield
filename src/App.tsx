@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ScannerModule from "./components/ScannerModule";
 import ClassifierModule from "./components/ClassifierModule";
 import CompassModule from "./components/CompassModule";
@@ -12,6 +12,12 @@ import { ShieldCheck, HardDrive, Compass, Cpu, Clock, Activity, AlertTriangle, P
 export default function App() {
   const [activeTab, setActiveTab] = useState<"scanner" | "classifier" | "compass">("compass");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [sysTime, setSysTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setSysTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className={`min-h-screen bg-[#070A13] text-gray-200 font-sans flex flex-col justify-between transition-colors duration-300 ${theme === "light" ? "light-theme" : ""}`}>
@@ -38,7 +44,7 @@ export default function App() {
                 </span>
               </span>
               <span className="text-[10.5px] text-gray-400 font-sans">
-                双用途无人机固/硬件协同监管缺陷预警平台 · 国创赛答辩系统
+                双用途无人机固/硬件协同监管缺陷预警平台
               </span>
             </div>
           </div>
@@ -49,7 +55,7 @@ export default function App() {
             <div className="hidden md:flex items-center space-x-3 text-xs text-gray-400">
               <div className="flex items-center space-x-2 font-mono bg-gray-950/60 px-3 py-1.5 rounded border border-gray-800">
                 <Clock className="w-3.5 h-3.5 text-sky-400" />
-                <span>系统时间 (UTC): 2026-06-02 13:29:21</span>
+                <span>系统时间 (UTC): {sysTime.toISOString().replace("T", " ").slice(0, 19)}</span>
               </div>
               <div className="flex items-center space-x-2 font-mono bg-gray-950/60 px-3 py-1.5 rounded border border-gray-800">
                 <Activity className="w-3.5 h-3.5 text-teal-400" />
@@ -175,13 +181,9 @@ export default function App() {
       </main>
 
       {/* Elegant minimalist platform footer */}
-      <footer className="bg-gray-950/60 border-t border-gray-800 py-6 text-center text-xs text-gray-500 font-sans">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>© 2026-2027 SkyShield 航盾 · UAV Multi-Level Defense Center</span>
-          <span className="flex items-center gap-1">
-            本展示方案经过国创赛评委实用性升级：将深奥卡尔曼滤波、贝叶斯拓扑翻译为一键式
-            <strong className="text-teal-400 font-semibold">物理起飞/坠落断言指示</strong>，极易上手看懂操作。
-          </span>
+      <footer className="bg-gray-950/60 border-t border-gray-800 py-4 text-center text-xs text-gray-500 font-sans">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2">
+          <span>© 2026 SkyShield 航盾 · UAV Multi-Level Defense Center</span>
         </div>
       </footer>
 

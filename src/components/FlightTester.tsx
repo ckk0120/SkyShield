@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { ReleaseVersion, TelemetryState } from "../types";
-import { Play, Pause, RotateCcw, AlertTriangle, CheckCircle2, ShieldAlert, Zap, Plane, Wind, Flame } from "lucide-react";
+import { Play, RotateCcw, AlertTriangle, CheckCircle2, ShieldAlert, Zap, Plane, Wind, Flame } from "lucide-react";
 
 interface FlightTesterProps {
   selectedVersion: ReleaseVersion;
@@ -27,9 +27,14 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
   });
   const [flightLogs, setFlightLogs] = useState<string[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const phaseRef = useRef(testPhase);
+
+  // Keep phaseRef in sync for the interval callback
+  useEffect(() => { phaseRef.current = testPhase; }, [testPhase]);
 
   const resetTest = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
+    phaseRef.current = "idle";
     setTestPhase("idle");
     setProgress(0);
     setTelemetry({
@@ -57,26 +62,18 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
     setFlightLogs((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
   };
 
-  const startTest = () => {
-    if (testPhase !== "idle") {
-      resetTest();
-    }
-    setTestPhase("calibration");
-    setProgress(0);
-    addLog(`[⚡] 开始起飞前诊断程序：搭载 [${selectedVersion.tag}] 固件...`);
-  };
-
-  useEffect(() => {
-    if (testPhase === "idle") return;
-
+  const runSimulation = (
+    isv405: boolean,
+    isv412: boolean,
+    isv430: boolean,
+    tag: string
+  ) => {
     let localProgress = 0;
-    const isv405 = selectedVersion.id === "rel_1";
-    const isv412 = selectedVersion.id === "rel_2";
-    const isv430 = selectedVersion.id === "rel_3";
 
     intervalRef.current = setInterval(() => {
-      localProgress += 2.5; // 每 50ms 走 2.5% -> 每个大阶段自选跳变
-      setProgress(Math.min(localProgress, 100));
+      localProgress += 2;
+      const prog = Math.min(localProgress, 100);
+      setProgress(prog);
 
       setTelemetry((prev) => {
         const nextTime = Math.round((prev.time + 0.05) * 100) / 100;
@@ -89,10 +86,9 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
         let sensorIMU = prev.sensorStatus.imu;
         let sensorCompass = prev.sensorStatus.compass;
 
-        // 根据测试时间点，推进不同阶段
         if (localProgress < 15) {
-          // Calibration (0% - 15%)
-          if (testPhase !== "calibration") {
+          if (phaseRef.current !== "calibration") {
+            phaseRef.current = "calibration";
             setTestPhase("calibration");
             addLog("[校验] 正在读取底层IMU陀螺仪偏置、加速度计对齐参数...");
           }
@@ -100,9 +96,8 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
           temps = temps.map(t => t + 0.1);
         } 
         else if (localProgress >= 15 && localProgress < 30) {
-          // Arming (15% - 30%)
           if (isv430) {
-            // Betaflight v4.3.0 crashes at arming because of timer collision!
+            phaseRef.current = "crash";
             setTestPhase("crash");
             if (intervalRef.current) clearInterval(intervalRef.current);
             addLog("🚨 [ERROR] 飞控检测到 TIM3 寄存器在 DShot 配置中死锁！3号定时器无安全通道。");
@@ -113,12 +108,13 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               ...prev,
               time: nextTime,
               vibration: 2.5,
-              motorTemps: [45, 42, 120, 38], // M3 is burning!
+              motorTemps: [45, 42, 120, 38],
               sensorStatus: { ...prev.sensorStatus, imu: "FAIL", compass: "FAIL" }
             };
           }
 
-          if (testPhase !== "arming") {
+          if (phaseRef.current !== "arming") {
+            phaseRef.current = "arming";
             setTestPhase("arming");
             addLog("[解锁] 解锁开关已拨(ARM)。电机进入1000us基础怠速，电调输出正常。");
           }
@@ -126,23 +122,22 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
           temps = temps.map(t => t + 0.3);
         } 
         else if (localProgress >= 30 && localProgress < 55) {
-          // Takeoff (30% - 55%)
-          if (testPhase !== "takeoff") {
+          if (phaseRef.current !== "takeoff") {
+            phaseRef.current = "takeoff";
             setTestPhase("takeoff");
             addLog("[爬升] 油门拉升。电机均值PWM达到1450us，机体垂直爬升至5.0米...");
           }
-          // Climb altitude
           alt = Math.min(5, alt + 0.25);
           vib = 0.3 + Math.random() * 0.15;
-          // Motor temps increase under load
           temps = temps.map(t => t + 0.8);
-          p = Math.sin(nextTime * 3) * 1.5; // Slight normal tilt
+          p = Math.sin(nextTime * 3) * 1.5;
           r = Math.cos(nextTime * 3) * 1.0;
         } 
         else if (localProgress >= 55 && localProgress < 80) {
-          // Hover and Heavy Throttle (55% - 80%)
-          if (testPhase !== "heavyThrottle" && testPhase !== "hover") {
-            setTestPhase(isv412 ? "heavyThrottle" : "hover");
+          if (phaseRef.current !== "heavyThrottle" && phaseRef.current !== "hover") {
+            const nextPhase = isv412 ? "heavyThrottle" : "hover";
+            phaseRef.current = nextPhase;
+            setTestPhase(nextPhase);
             addLog(
               isv412 
               ? "⚠️ [极限打杆] 进入高负载横滚指令输入。IMU高频无校验缺陷开始暴露！" 
@@ -150,14 +145,13 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
             );
           }
 
-          // If v4.1.2, telemetry will start oscillating severely!
           if (isv412) {
-            vib = 0.8 + Math.random() * 0.4; // High vibration
-            p = Math.sin(nextTime * 8) * (8 + (localProgress - 55) * 0.8); // exponential wobble
+            vib = 0.8 + Math.random() * 0.4;
+            p = Math.sin(nextTime * 8) * (8 + (localProgress - 55) * 0.8);
             r = Math.cos(nextTime * 9) * (6 + (localProgress - 55) * 0.6);
             temps[0] += 1.2;
             temps[1] += 1.1;
-            temps[2] += 1.6; // Motor imbalance
+            temps[2] += 1.6;
             temps[3] += 1.0;
             sensorIMU = "DRIFT";
             if (localProgress > 72) {
@@ -172,10 +166,9 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
           }
         } 
         else if (localProgress >= 80 && localProgress < 100) {
-          // Landing (80% - 100%)
           if (isv412) {
-            // v4.1.2 survives but safely warning on high drift
-            if (testPhase !== "landing") {
+            if (phaseRef.current !== "landing") {
+              phaseRef.current = "landing";
               setTestPhase("landing");
               addLog("[报警降落] 姿态计算大幅漂移，触发保护性自动迫降。");
             }
@@ -184,8 +177,8 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
             p = p * 0.8;
             r = r * 0.8;
           } else {
-            // v4.0.5 landing smoothly
-            if (testPhase !== "landing") {
+            if (phaseRef.current !== "landing") {
+              phaseRef.current = "landing";
               setTestPhase("landing");
               addLog("[降落] 模拟测试完美圆满。飞机降低转速，平稳着陆。");
             }
@@ -196,7 +189,6 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
           }
         } 
         else if (localProgress >= 100) {
-          // Complete
           if (intervalRef.current) clearInterval(intervalRef.current);
           if (isv412) {
             addLog("[完成] 地面迫降完成。电机停止，检测到传感器存在强烈偏差错误，不建议起飞。");
@@ -222,16 +214,39 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
         };
       });
     }, 100);
+  };
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [testPhase, selectedVersion]);
+  const startTest = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    phaseRef.current = "calibration";
+    setTestPhase("calibration");
+    setProgress(0);
+    setTelemetry({
+      time: 0,
+      altitude: 0,
+      pitch: 0,
+      roll: 0,
+      vibration: 0.05,
+      motorTemps: [30, 30, 30, 30],
+      rcSignal: 100,
+      gpsLock: "RTK Fix",
+      sensorStatus: { imu: "OK", compass: "OK", barometer: "OK", batteryStatus: "24.6V (100%)" }
+    });
+    setFlightLogs([`[${new Date().toLocaleTimeString()}] [⚡] 开始起飞前诊断程序：搭载 [${selectedVersion.tag}] 固件...`]);
+
+    runSimulation(
+      selectedVersion.id === "rel_1",
+      selectedVersion.id === "rel_2",
+      selectedVersion.id === "rel_3",
+      selectedVersion.tag
+    );
+  };
 
   return (
     <div className="bg-[#111827] rounded-xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-teal-950 to-[#0B0F19] p-4 border-b border-gray-800 flex items-center justify-between">
+      <div className="bg-[#111827] p-4 border-b border-gray-800 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="p-2 rounded-lg bg-teal-500/10 text-teal-400">
             <Plane className="w-5 h-5 animate-pulse" />
@@ -241,7 +256,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
               🛫 核心物理验证：SkyShield 虚拟真机起飞推断系统
             </h3>
             <p className="text-xs text-gray-400">
-              将因果拓扑 $n \to n+1$ 维度推断翻译为直观的起飞机动，解决学术模型晦涩难懂问题
+              实时仿真飞行验证，将因果分析结果映射为直观的起降机动与传感器告警
             </p>
           </div>
         </div>
@@ -260,20 +275,35 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
             <span className="text-xs text-gray-400 self-start mb-2 font-mono">✈️ 无人机姿态动态仿真仪</span>
             
             {/* Visual Artificial Horizon (Gyroscopic Pitch/Roll Indicator) */}
-            <div className="relative w-44 h-44 rounded-full border-4 border-gray-800 bg-[#0F1D36] overflow-hidden shadow-inner flex items-center justify-center">
+            <div className="relative w-44 h-44 rounded-full border-[3px] border-gray-600 bg-[#020617] overflow-hidden flex items-center justify-center" style={{boxShadow: 'inset 0 0 30px rgba(0,0,0,0.5), 0 0 0 2px #1e293b'}}>
               {/* Sky and Ground partition reflecting pitch/roll */}
               <div 
                 className="absolute w-80 h-80 transition-transform duration-100"
                 style={{
                   transform: `rotate(${telemetry.roll}deg) translateY(${telemetry.pitch * 3}px)`,
-                  background: 'linear-gradient(to bottom, #2563EB 50%, #78350F 50%)'
+                  background: 'linear-gradient(to bottom, #0EA5E9 50%, #92400E 50%)'
                 }}
               />
-              {/* Center pointer lines */}
-              <div className="absolute inset-0 flex items-center justify-between px-6 z-10 pointers-none">
-                <div className="w-8 h-1 bg-yellow-500 rounded" />
-                <div className="w-3 h-3 border-2 border-yellow-500 rounded-full bg-red-500" />
-                <div className="w-8 h-1 bg-yellow-500 rounded" />
+              {/* Pitch ladder ticks */}
+              <div className="absolute inset-0 pointer-events-none z-10">
+                {[-20, -10, 10, 20].map(v => (
+                  <div key={v} className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1"
+                       style={{top: `calc(50% + ${-v * 1.5}px)`}}>
+                    <div className="w-3 h-px bg-white/50" />
+                    <span className="text-[8px] font-mono text-white/60">{v}°</span>
+                    <div className="w-3 h-px bg-white/50" />
+                  </div>
+                ))}
+              </div>
+              {/* Horizon line */}
+              <div className="absolute left-1 right-1 h-px bg-white/80 top-1/2 z-20 pointer-events-none" />
+              {/* Center pointer */}
+              <div className="absolute inset-0 flex items-center pointer-events-none z-20">
+                <div className="flex items-center justify-between w-full px-5">
+                  <div className="w-6 h-[2px] bg-white rounded" />
+                  <div className="w-0 h-0 border-[5px] border-transparent border-l-white ml-[-2px]" />
+                  <div className="w-6 h-[2px] bg-white rounded" />
+                </div>
               </div>
 
               {/* Angle ticks */}
@@ -483,7 +513,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
           {/* Real-time System Debug Console Terminal Logger */}
           <div className="col-span-2 bg-gray-950 p-3 rounded-lg border border-gray-800 text-left font-mono min-h-36 max-h-36 flex flex-col justify-between">
             <span className="text-[10px] text-teal-400 border-b border-gray-800 pb-1 flex items-center justify-between">
-              <span>🖥️ 航空诊断端状态日志 (REAL-TIME UAV DIAGNOSTIC TERMINAL)</span>
+              <span>🖥️ 飞行诊断终端</span>
               <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
             </span>
             
@@ -508,9 +538,9 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
         {/* Right Layperson-friendly Verdict & Explanations */}
         <div className="lg:col-span-3 bg-gray-900/40 p-4 rounded-lg border border-gray-800 flex flex-col justify-between">
           <div className="space-y-3.5">
-            <span className="text-xs text-gray-400 font-sans font-medium uppercase tracking-wider block border-b border-gray-800 pb-1.5">
-              ⚖️ 天空合规起飞裁决书
-            </span>
+              <span className="text-xs text-gray-400 font-sans font-medium uppercase tracking-wider block border-b border-gray-800 pb-1.5">
+                ⚖️ 起飞合规裁决
+              </span>
 
             {/* Big Verdict Indicator */}
             {selectedVersion.flightTestOutcome.canTakeoff ? (
@@ -549,7 +579,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
             {/* Simple corrective guide */}
             <div className="space-y-1.5">
-              <span className="text-[11px] text-gray-400 font-sans font-medium">💡 普通人怎么看懂哪里有问题：</span>
+              <span className="text-[11px] text-gray-400 font-sans font-medium">💡 故障场景推演：</span>
               <div className="bg-gray-950/60 p-2.5 rounded border border-gray-800 text-[11px] text-gray-300 leading-relaxed font-sans">
                 {selectedVersion.flightTestOutcome.detailedCrashScenario}
               </div>
@@ -558,7 +588,7 @@ export default function FlightTester({ selectedVersion }: FlightTesterProps) {
 
           <div className="pt-3 border-t border-gray-800 space-y-1.5">
             <span className="text-[11px] text-amber-400 font-sans font-medium flex items-center gap-1">
-              🛠️ 怎么修改缺陷以保障飞行：
+              🛠️ 修复建议：
             </span>
             <div className="text-[11px] leading-relaxed text-gray-300 font-sans">
               {selectedVersion.flightTestOutcome.laymanRemedy}

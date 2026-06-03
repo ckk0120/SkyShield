@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { ARDUPILOT_FILES, BETAFLIGHT_FILES } from "../data/mockData";
 import { FirmwareFile } from "../types";
-import { Search, Info, AlertOctagon, HelpCircle, Layers, CheckSquare, ShieldCheck, Flame, Cpu, RefreshCw } from "lucide-react";
+import { Search, AlertOctagon, Layers, CheckSquare, ShieldCheck, Cpu, RefreshCw } from "lucide-react";
 
 export default function ScannerModule() {
   const [selectedPreset, setSelectedPreset] = useState<"ArduPilot" | "Betaflight">("ArduPilot");
@@ -49,8 +49,8 @@ export default function ScannerModule() {
             <Cpu className="w-5 h-5 text-sky-400" />
             固件软硬交互热点一键扫描器 (Hotspot Scanner)
           </h3>
-          <p className="text-xs text-xs text-gray-400">
-            学术发现：无人机 90% 的硬交互缺陷和断连挂死，皆高密度集中在 20% 涉及 SPI, I2C, DMA, 中断等底层交互的主动外设代码中。
+          <p className="text-xs text-gray-400">
+            聚焦高密度硬件交互代码，快速定位 SPI/I2C/DMA/ISR 总线中的高频风险点。
           </p>
         </div>
 
@@ -113,7 +113,7 @@ export default function ScannerModule() {
 
             <div className="bg-gray-950 p-4 rounded-lg border border-gray-900 space-y-3">
               <p className="text-[11px] text-gray-400 font-sans">
-                以下为排序后的软硬交互占比系数。您能清晰地看到，最左侧（排名前两位）的硬件访问频率与中断时耗，完全呈二八法则指数型主导了剩余文件的安全系数：
+                按风险评分降序排列的固件文件热力分布（二八法则：前 20% 文件贡献 80% 风险）：
               </p>
               
               {/* SVG-based Dynamic Bar Chart which acts as the Heatmap */}
@@ -295,7 +295,7 @@ export default function ScannerModule() {
 
             {/* Practical fly warning */}
             <div className="space-y-1">
-              <span className="text-[10px] text-gray-400 font-sans font-semibold">物理起飞推断反馈 (实用状态)：</span>
+              <span className="text-[10px] text-gray-400 font-sans font-semibold">起飞影响推断：</span>
               <div className={`p-2.5 rounded text-[11px] font-sans leading-relaxed border ${
                 selectedFile.riskScore >= 75 
                 ? 'bg-red-950/30 border-red-500/20 text-red-300' 
@@ -307,7 +307,7 @@ export default function ScannerModule() {
 
             {/* Detail Analysis */}
             <div className="space-y-1">
-              <span className="text-[10px] text-gray-400 font-sans font-semibold">底层逻辑机制解释 (学术支撑)：</span>
+              <span className="text-[10px] text-gray-400 font-sans font-semibold">机制分析：</span>
               <p className="bg-gray-950/40 p-2.5 rounded text-[11px] leading-relaxed text-gray-300 font-sans border border-gray-900">
                 {selectedFile.explanation}
               </p>
@@ -316,10 +316,10 @@ export default function ScannerModule() {
 
           {/* Practical Solution Checklist */}
           <div className="border-t border-gray-800 pt-3.5 space-y-2">
-            <span className="text-[11px] font-sans font-bold text-sky-400 flex items-center gap-1">
-              <CheckSquare className="w-3.5 h-3.5" />
-              普通人怎么修改 (一键固件除燥配方)：
-            </span>
+              <span className="text-[11px] font-sans font-bold text-sky-400 flex items-center gap-1">
+                <CheckSquare className="w-3.5 h-3.5" />
+                修复方案：
+              </span>
             <div className="bg-sky-950/10 border border-sky-500/10 rounded p-2.5 text-[11px] leading-relaxed text-gray-300 font-sans flex items-start space-x-2">
               <ShieldCheck className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
               <span>
@@ -329,7 +329,7 @@ export default function ScannerModule() {
             </div>
             
             <p className="text-[9px] font-mono text-gray-500 text-center leading-3">
-              该修复补丁已同步至 SkyShield 云端，可供导出供 Betaflight/ArduPilot 主管编译器一键打包。
+              补丁已同步至 SkyShield 云端，可导出至 Betaflight / ArduPilot 编译链。
             </p>
           </div>
 

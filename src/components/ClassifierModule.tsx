@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { MOCK_CODE_SNIPPETS } from "../data/mockData";
 import { CodeSnippet } from "../types";
-import { Terminal, Send, Eye, RefreshCw, Layout, FileCode, CheckSquare, HelpCircle, Code, ShieldAlert, Cpu } from "lucide-react";
+import { Terminal, Send, FileCode, ShieldAlert, Cpu } from "lucide-react";
 
 export default function ClassifierModule() {
   const [selectedSnippet, setSelectedSnippet] = useState<CodeSnippet>(MOCK_CODE_SNIPPETS[0]);
@@ -56,14 +56,14 @@ export default function ClassifierModule() {
             云端 LLM 软硬交互底层语义分类器 (Semantic Classifier)
           </h3>
           <p className="text-xs text-gray-400">
-            学术痛点：传统文本匹配极易误报。SkyShield 引入深度安全大语言模型，理解代码是在做“纯运算”还是做“侵入式操作物理硬件”，从而一票否决高危硬件写操。
+            基于大语言模型区分纯算数层与物理硬件操作层，零温约束下杜绝幻觉误判。
           </p>
         </div>
 
         <div className="flex md:justify-end">
           <button
             id="btn-toggle-prompt-drawer"
-            className="px-3.5 py-1.5 rounded border border-gray-750 bg-gray-900/60 hover:bg-gray-800 text-xs font-sans text-sky-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-1.5 rounded border border-gray-700 bg-gray-900/60 hover:bg-gray-800 text-xs font-sans text-sky-400 flex items-center gap-1.5 transition-colors cursor-pointer"
             onClick={() => setShowPromptDrawer(!showPromptDrawer)}
           >
             <LayersIcon className="w-3.5 h-3.5" />
@@ -94,7 +94,7 @@ Strict Rules:
 3. Completely avoid verbose textual conversation. Execute zero-temperature deterministic output.`}
           </pre>
           <p className="text-[9px] text-gray-500 font-sans leading-3">
-            提示：通过为 LLM 注入强类型 JSON 模型约束，能彻底斩断其“输出口水话”及“产生功能幻觉”的隐患，保证代码静态扫描结果稳定、一致。
+            LLM 注入强类型 JSON Schema 约束，消除模型幻觉与冗余输出，保证扫描结果稳定一致。
           </p>
         </div>
       )}
@@ -210,7 +210,7 @@ Strict Rules:
               <div className="space-y-3 animate-fade-in text-xs font-sans">
                 
                 {/* Structured JSON verdict schema block */}
-                <div className="bg-slate-900/40 border border-slate-850 p-3.5 rounded-lg space-y-3.5">
+                <div className="bg-slate-900/40 border border-gray-800 p-3.5 rounded-lg space-y-3.5">
                   <div className="flex justify-between items-center text-[10px] font-mono border-b border-gray-800 pb-1.5">
                     <span className="text-gray-400">📊 大模型结构化数据边 (STRUCT OUT)</span>
                     <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${
@@ -252,10 +252,10 @@ Strict Rules:
           {/* Corrective Action for Ordinary User */}
           {isCompleted && (
             <div className="pt-3 border-t border-gray-800 space-y-2 text-xs font-sans">
-              <span className="text-[11px] font-bold text-red-400 flex items-center gap-1">
-                <ShieldAlert className="w-4 h-4" />
-                普通机手怎么看懂测试与威胁：
-              </span>
+                <span className="text-[11px] font-bold text-red-400 flex items-center gap-1">
+                  <ShieldAlert className="w-4 h-4" />
+                  起飞安全性评估：
+                </span>
               <p className="text-gray-300 leading-relaxed text-[11px]">
                 {selectedSnippet.takeoffSafetyImpact}
               </p>
